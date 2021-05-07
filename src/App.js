@@ -24,6 +24,7 @@ class App extends React.Component {
       <div className="App">
         <h1>Log-In App</h1>
         <LogIn handleUser={this.handleUserChange} handlePassword={this.handlePasswordChange}/>
+        <h1>Hello</h1>
       </div>
   );
   }
