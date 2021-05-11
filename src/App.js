@@ -93,8 +93,8 @@ class App extends React.Component {
     fetch(BLOGURL, configObj)
     .then(r => r.json())
     .then(data => {
-      console.log(data.blogs)
-      this.setState({blogs: data.blogs})
+      console.log(data)
+      this.setState({blogs: data})
     })
   }
 
