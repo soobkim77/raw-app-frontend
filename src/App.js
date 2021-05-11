@@ -1,10 +1,10 @@
 import AuthForm from "./components/AuthForm";
 import Blog from "./components/Blog";
-import CreateBlog from "./components/CreateBlog";
+import BlogForm from "./components/BlogForm";
 import BlogPage from "./pages/BlogPage";
 import React from "react";
 import "./App.css";
-import {Route, Switch, Redirect} from 'react-router-dom';
+import {Route, Switch} from 'react-router-dom';
 
 const USERURL = "http://localhost:3000/users";
 const SESHURL = "http://localhost:3000/sessions";
@@ -117,7 +117,7 @@ class App extends React.Component {
           />
           <Route exact path='/blogs/:id' render={() => <Blog />} />
           <Route exact path='/blog/create'>
-            <CreateBlog />
+            <BlogForm />
           </Route>
         </Switch>
       </div>
