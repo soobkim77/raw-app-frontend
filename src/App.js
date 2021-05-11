@@ -100,6 +100,7 @@ class App extends React.Component {
     fetch(BLOGURL, configObj)
     .then(r => r.json())
     .then(resp => {
+      console.log(resp)
       this.setState({blogs: resp.data})
     })
     
