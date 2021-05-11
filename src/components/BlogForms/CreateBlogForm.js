@@ -9,7 +9,7 @@ import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 
 const URL = "http://localhost:3000/blogs";
 
-const BlogForm = () => {
+const CreateBlogForm = () => {
     const classes = useStyles();
     const [title, setTitle] = useState();
     const [content, setContent] = useState();
@@ -68,7 +68,7 @@ const BlogForm = () => {
     );
 }
 
-export default BlogForm;
+export default CreateBlogForm;
 
 const handleSubmit = (e, title, content, img) => {
     e.preventDefault();

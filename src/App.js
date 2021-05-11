@@ -1,6 +1,7 @@
 import AuthForm from "./components/AuthForm";
 import Blog from "./components/Blog";
-import BlogForm from "./components/BlogForm";
+import CreateBlogForm from "./components/BlogForms/CreateBlogForm";
+import EditBlogForm from "./components/BlogForms/EditBlogForm";
 import BlogPage from "./pages/BlogPage";
 import React from "react";
 import "./App.css";
@@ -45,7 +46,7 @@ class App extends React.Component {
 
     fetch(USERURL, configObj)
       .then((r) => r.json())
-      .then((loggedIn) =>
+      .then(() =>
         this.setState({
           loggedIn: !this.state.login,
           username: "",
@@ -99,7 +100,7 @@ class App extends React.Component {
     })
     
   }
-
+  
   render() {
     return (
       <div className='App'>
@@ -109,16 +110,24 @@ class App extends React.Component {
         </button> */}
 
         <Switch>
-          <Route exact path="/">{this.renderForm()}</Route>
+          <Route exact path='/'>
+            {this.renderForm()}
+          </Route>
           <Route
-            exact path='/blogs'
+            exact
+            path='/blogs'
             render={() => (
               <BlogPage data={this.fetchBlogs} blogs={this.state.blogs} />
             )}
           />
           <Route exact path='/blogs/:id' render={() => <Blog />} />
-          <Route exact path='/blog/create'>
-            <BlogForm />
+          <Route exact path='/blogs/create' component={CreateBlogForm} />
+          <Route exact path='/blog/edit/:id' render={(routerProps) => {
+               let blog = this.state.blogs.find(
+                 (blog) => routerProps.match.params.id === blog.id
+               );
+               return <EditBlogForm blog={blog} />;
+          }}>
           </Route>
         </Switch>
       </div>
