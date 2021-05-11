@@ -1,6 +1,9 @@
 import AuthForm from "./components/AuthForm";
+import Blog from "./components/Blog";
+import BlogPage from "./pages/BlogPage";
 import React from "react";
 import "./App.css";
+import {Route, Switch, Redirect} from 'react-router-dom';
 
 const USERURL = "http://localhost:3000/users";
 const SESHURL = "http://localhost:3000/sessions";
@@ -79,22 +82,25 @@ class App extends React.Component {
     return (
       <div className='App'>
         <h1>Raw</h1>
-        {this.state.loggedIn ? (
-          <AuthForm
-            handleUser={this.handleUserChange}
-            handlePassword={this.handlePasswordChange}
-            handleSubmit={this.handleLogin}
-            buttonText={"Log In"}
-          />
-        ) : (
-          <AuthForm
-            handleUser={this.handleUserChange}
-            handlePassword={this.handlePasswordChange}
-            handleSubmit={this.handleCreateUser}
-            buttonText={"Create User"}
-          />
-        )}
-        <h1>Hello</h1>
+          {this.state.loggedIn ? (
+            <AuthForm
+              handleUser={this.handleUserChange}
+              handlePassword={this.handlePasswordChange}
+              handleSubmit={this.handleLogin}
+              buttonText={"Log In"}
+            />
+          ) : (
+            <AuthForm
+              handleUser={this.handleUserChange}
+              handlePassword={this.handlePasswordChange}
+              handleSubmit={this.handleCreateUser}
+              buttonText={"Create User"}
+            />
+          )}
+        <Switch>
+          <Route path="/blogs" render={()=> <BlogPage />}/>
+          <Route path="/blogs/:id" render={()=> <Blog />}/>
+        </Switch>
       </div>
     );
   }
