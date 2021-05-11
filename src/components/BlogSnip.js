@@ -23,21 +23,19 @@ const useStyles = makeStyles({
   },
 });
 
-export default function BlogSnip({blog}) {
+export default function BlogSnip(props) {
   const classes = useStyles();
 
 
   return (
     <Card className={classes.root}>
       <CardContent>
-        {/* <Typography className={classes.title} color="textSecondary" gutterBottom>
-          Word of the Day
-        </Typography> */}
+
         <Typography variant="h5" component="h2">
-          {blog.attributes.title}
+          {props.blog.attributes.title}
         </Typography>
         <Typography className={classes.pos} color="textSecondary">
-          {blog.attributes.user}
+          {props.blog.attributes.user}
         </Typography>
         <Typography variant="body2" component="p">
           well meaning and kindly.
@@ -46,7 +44,7 @@ export default function BlogSnip({blog}) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Link to={`/blogs/${blog.id}`} >Read More</Link>
+        <Link to={`/blogs/${props.blog.id}`} onClick={() => props.showBlog(props.blog)}>Read More</Link>
       </CardActions>
     </Card>
   );
