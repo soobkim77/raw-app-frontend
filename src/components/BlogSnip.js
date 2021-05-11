@@ -34,10 +34,10 @@ export default function BlogSnip({blog}) {
           Word of the Day
         </Typography> */}
         <Typography variant="h5" component="h2">
-          {blog.title}
+          {blog.attributes.title}
         </Typography>
         <Typography className={classes.pos} color="textSecondary">
-          {blog.user_id}
+          {blog.attributes.user}
         </Typography>
         <Typography variant="body2" component="p">
           well meaning and kindly.
@@ -46,7 +46,7 @@ export default function BlogSnip({blog}) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Learn More</Button>
+        <Button size="small">Read More</Button>
       </CardActions>
     </Card>
   );
