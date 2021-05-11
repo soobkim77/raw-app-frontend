@@ -5,7 +5,7 @@ const BlogPage = (props) => {
         <div>
             <button onClick={(e) =>props.data(e)}>Hello</button>
             <div>
-                {props.blogs.data.map(blog => {
+                {props.blogs.map(blog => {
                     return <BlogSnip blog={blog}/>
                 })}
             </div>
