@@ -46,7 +46,7 @@ export default function BlogSnip({blog}) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Link to={`/blogs/${blog.id}`} >Read More</Link>
+      <Link to={{pathname: `/blogs/${blog.id}`, state: {blog}}} >Read More</Link>
       </CardActions>
     </Card>
   );

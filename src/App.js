@@ -120,8 +120,8 @@ class App extends React.Component {
             />
           )}
         <Switch>
-          <Route path="/blogs" render={()=> <BlogPage data={this.fetchBlogs} blogs={this.state.blogs}/>}/>
-          <Route path="/blogs/:id" render={()=> <Blog />}/>
+          <Route exact path="/blogs" render={()=> <BlogPage data={this.fetchBlogs} blogs={this.state.blogs}/>}/>
+          <Route exact path="/blogs/:id" render={()=> <Blog />}/>
         </Switch>
       </div>
     );
