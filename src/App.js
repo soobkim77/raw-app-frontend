@@ -1,9 +1,10 @@
 import AuthForm from "./components/AuthForm";
 import Blog from "./components/Blog";
+import BlogForm from "./components/BlogForm";
 import BlogPage from "./pages/BlogPage";
 import React from "react";
 import "./App.css";
-import {Route, Switch, Redirect} from 'react-router-dom';
+import {Route, Switch} from 'react-router-dom';
 
 
 const USERURL = "http://localhost:3000/users";
@@ -102,30 +103,51 @@ class App extends React.Component {
   render() {
     return (
       <div className='App'>
-        <h1>Raw</h1>
-        <button onClick={()=>this.setState({loggedIn:true})}>LOGIN SWITCH</button>
-          {this.state.loggedIn ? (
-            <AuthForm
-              handleUser={this.handleUserChange}
-              handlePassword={this.handlePasswordChange}
-              handleSubmit={this.handleLogin}
-              buttonText={"Log In"}
-            />
-          ) : (
-            <AuthForm
-              handleUser={this.handleUserChange}
-              handlePassword={this.handlePasswordChange}
-              handleSubmit={this.handleCreateUser}
-              buttonText={"Create User"}
-            />
-          )}
+        {/* <h1>Raw</h1>
+        <button onClick={() => this.setState({ loggedIn: true })}>
+          LOGIN SWITCH
+        </button> */}
+
         <Switch>
-          <Route exact path="/blogs" render={()=> <BlogPage data={this.fetchBlogs} blogs={this.state.blogs}/>}/>
-          <Route exact path="/blogs/:id" render={()=> <Blog />}/>
+          <Route exact path="/">{this.renderForm()}</Route>
+          <Route
+            exact path='/blogs'
+            render={() => (
+              <BlogPage data={this.fetchBlogs} blogs={this.state.blogs} />
+            )}
+          />
+          <Route exact path='/blogs/:id' render={() => <Blog />} />
+          <Route exact path='/blog/create'>
+            <BlogForm />
+          </Route>
         </Switch>
       </div>
     );
   }
+
+
+
+  renderForm = () => {
+    return this.state.loggedIn ? (
+      <AuthForm
+        handleUser={this.handleUserChange}
+        handlePassword={this.handlePasswordChange}
+        handleSubmit={this.handleLogin}
+        buttonText={"Log In"}
+      />
+    ) : (
+      <AuthForm
+        handleUser={this.handleUserChange}
+        handlePassword={this.handlePasswordChange}
+        handleSubmit={this.handleCreateUser}
+        buttonText={"Create User"}
+      />
+    );
+}
+
+
+
+
 }
 
 export default App;
