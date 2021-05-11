@@ -7,6 +7,7 @@ import {Route, Switch, Redirect} from 'react-router-dom';
 
 const USERURL = "http://localhost:3000/users";
 const SESHURL = "http://localhost:3000/sessions";
+const BLOGURL = "http://localhost:3000/blogs";
 
 class App extends React.Component {
   state = {
@@ -14,6 +15,7 @@ class App extends React.Component {
     username: "",
     password: "",
     user: {},
+    blogs: []
   };
 
   handleUserChange = (e) => {
@@ -78,10 +80,29 @@ class App extends React.Component {
     );
   };
 
+  fetchBlogs = (e) => {
+    // console.log(e, localStorage.getItem("jwt"))
+    let configObj = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("jwt")}`
+      }
+    }
+
+    fetch(BLOGURL, configObj)
+    .then(r => r.json())
+    .then(data => {
+      console.log(data.blogs)
+      this.setState({blogs: data.blogs})
+    })
+  }
+
   render() {
     return (
       <div className='App'>
         <h1>Raw</h1>
+        <button onClick={()=>this.setState({loggedIn:true})}>LOGIN SWITCH</button>
           {this.state.loggedIn ? (
             <AuthForm
               handleUser={this.handleUserChange}
@@ -98,7 +119,7 @@ class App extends React.Component {
             />
           )}
         <Switch>
-          <Route path="/blogs" render={()=> <BlogPage />}/>
+          <Route path="/blogs" render={()=> <BlogPage data={this.fetchBlogs} blogs={this.state.blogs}/>}/>
           <Route path="/blogs/:id" render={()=> <Blog />}/>
         </Switch>
       </div>

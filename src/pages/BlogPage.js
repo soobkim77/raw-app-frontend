@@ -1,7 +1,10 @@
-const BlogPage = () => {
+const BlogPage = (props) => {
     return (
         <div>
-            <h1>Blog Page</h1>
+            <button onClick={(e) =>props.data(e)}>Hello</button>
+            {props.blogs.map(blog => {
+                return <h1>{blog.title}</h1>
+            })}
         </div>
     )
 }
