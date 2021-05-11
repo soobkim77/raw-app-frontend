@@ -4,7 +4,7 @@ import BlogForm from "./components/BlogForm";
 import BlogPage from "./pages/BlogPage";
 import React from "react";
 import "./App.css";
-import {Route, Switch} from 'react-router-dom';
+import {Route, Switch, Redirect} from 'react-router-dom';
 
 
 const USERURL = "http://localhost:3000/users";
@@ -17,7 +17,8 @@ class App extends React.Component {
     username: "",
     password: "",
     user: {},
-    blogs: []
+    blogs: [],
+    blog: {}
   };
 
   handleUserChange = (e) => {
@@ -75,6 +76,10 @@ class App extends React.Component {
       .then((resp) => this.userHelper(resp));
   };
 
+  showBlog = (blog) => {
+    this.setState({blog})
+  }
+
   userHelper = (resp) => {
     this.setState(
       { user: resp.user.data.attributes, username: "", password: "" },
@@ -113,10 +118,10 @@ class App extends React.Component {
           <Route
             exact path='/blogs'
             render={() => (
-              <BlogPage data={this.fetchBlogs} blogs={this.state.blogs} />
+              <BlogPage data={this.fetchBlogs} blogs={this.state.blogs} showBlog={this.showBlog} />
             )}
           />
-          <Route exact path='/blogs/:id' render={() => <Blog />} />
+          <Route exact path='/blogs/:id' render={() =><Blog blog={this.state.blog}/>}/>
           <Route exact path='/blog/create'>
             <BlogForm />
           </Route>
