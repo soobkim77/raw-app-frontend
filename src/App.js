@@ -5,6 +5,7 @@ import React from "react";
 import "./App.css";
 import {Route, Switch, Redirect} from 'react-router-dom';
 
+
 const USERURL = "http://localhost:3000/users";
 const SESHURL = "http://localhost:3000/sessions";
 const BLOGURL = "http://localhost:3000/blogs";
@@ -92,10 +93,10 @@ class App extends React.Component {
 
     fetch(BLOGURL, configObj)
     .then(r => r.json())
-    .then(data => {
-      console.log(data)
-      this.setState({blogs: data})
+    .then(resp => {
+      this.setState({blogs: resp.data})
     })
+    
   }
 
   render() {
