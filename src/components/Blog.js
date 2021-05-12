@@ -15,7 +15,7 @@ const submitComment = (e, cont, blogID) => {
             content: cont,
             blog_id: blogID
     }
-    console.log(JSON.stringify(bod))
+
     const configObj = {
         method: "POST",
         headers: {
@@ -75,6 +75,16 @@ const Blog = (props) => {
                     Publish
                 </Button>
             </form>
+            <div>
+                {props.blog.attributes.comments.data.map(comment =>{
+                    return (
+                        <div>
+                            <p>{comment.attributes.content}</p>
+                            <p>{comment.attributes.user.username}</p>
+                        </div>
+                    )
+                })}
+            </div>
         </div>
     )
 }
