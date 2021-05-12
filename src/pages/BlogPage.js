@@ -6,7 +6,7 @@ const BlogPage = (props) => {
             <button onClick={(e) =>props.data(e)}>Hello</button>
             <div>
                 {props.blogs.map(blog => {
-                    return <BlogSnip blog={blog} showBlog={props.showBlog}/>
+                    return <BlogSnip key={blog.id} blog={blog} showBlog={props.showBlog}/>
                 })}
             </div>
         </div>

@@ -5,8 +5,7 @@ import EditBlogForm from "./components/BlogForms/EditBlogForm";
 import BlogPage from "./pages/BlogPage";
 import React from "react";
 import "./App.css";
-import {Route, Switch, Redirect} from 'react-router-dom';
-
+import { Route, Switch} from "react-router-dom";
 
 const USERURL = "http://localhost:3000/users";
 const SESHURL = "http://localhost:3000/sessions";
@@ -19,7 +18,7 @@ class App extends React.Component {
     password: "",
     user: {},
     blogs: [],
-    blog: {}
+    blog: {},
   };
 
   handleUserChange = (e) => {
@@ -78,8 +77,8 @@ class App extends React.Component {
   };
 
   showBlog = (blog) => {
-    this.setState({blog})
-  }
+    this.setState({ blog });
+  };
 
   userHelper = (resp) => {
     this.setState(
@@ -94,19 +93,42 @@ class App extends React.Component {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${localStorage.getItem("jwt")}`
-      }
-    }
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+      },
+    };
 
     fetch(BLOGURL, configObj)
-    .then(r => r.json())
-    .then(resp => {
-      this.setState({blogs: resp.data})
-    })}
+      .then((r) => r.json())
+      .then((resp) => {
+        console.log(resp);
+        this.setState({ blogs: resp.data });
+      });
+  };
 
+  handleSubmit = (e, title, content, img, id) => {
+    e.preventDefault();
+    const body = {
+      blog: {
+        title,
+        content,
+        img,
+      },
+    };
+    const configObj = {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "Application/json",
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+      },
+      body: JSON.stringify(body),
+    };
     
-  
-  
+    fetch(BLOGURL + "/" + id, configObj)
+      .then((r) => r.json())
+      .then((blog) => this.setState({ blog }, ))
+      .catch((e) => console.error("error: ", e));
+  };
+
   render() {
     return (
       <div className='App'>
@@ -123,24 +145,35 @@ class App extends React.Component {
             exact
             path='/blogs'
             render={() => (
-              <BlogPage data={this.fetchBlogs} blogs={this.state.blogs} showBlog={this.showBlog} />
+              <BlogPage
+                data={this.fetchBlogs}
+                blogs={this.state.blogs}
+                showBlog={this.showBlog}
+              />
             )}
           />
-          <Route exact path='/blogs/:id' render={() => <Blog blog={this.state.blog} deleteCom={this.deleteComment}/>} />
+          <Route
+            exact
+            path='/blogs/:id'
+            render={() => <Blog blog={this.state.blog} />}
+          />
           <Route exact path='/blogs/create' component={CreateBlogForm} />
-          <Route exact path='/blog/edit/:id' render={(routerProps) => {
-               let blog = this.state.blogs.find(
-                 (blog) => routerProps.match.params.id === blog.id
-               );
-               return <EditBlogForm blog={blog} />;
-          }}>
-          </Route>
+          <Route
+            exact
+            path='/blogs/edit/:id'
+            render={(routerProps) => {
+              let blog = this.state.blogs.find(
+                (blog) => routerProps.match.params.id === blog.id
+              );
+              return (
+                <EditBlogForm handleSubmit={this.handleSubmit} blog={blog} />
+              );
+            }}
+          ></Route>
         </Switch>
       </div>
     );
   }
-
-
 
   renderForm = () => {
     return this.state.loggedIn ? (
@@ -158,11 +191,7 @@ class App extends React.Component {
         buttonText={"Create User"}
       />
     );
-}
-
-
-
-
+  };
 }
 
 export default App;

@@ -5,22 +5,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import Comment from './Comment'
 
+
 const URL = "http://localhost:3000/comments"
-
-// const deleteComment = (comment) => {
-//     let configObj = {
-//       method: "DELETE",
-//       headers: {
-//         "Content-Type": "application/json",
-//         "Authorization": `Bearer ${localStorage.getItem("jwt")}`
-//       }
-//     }
-//     fetch(`http://localhost:3000/comments/${comment.id}`, configObj)
-//     .then(r => r.json()) 
-// }
-
-
-
 
 const Blog = (props) => {
     const [content, setContent] = useState();
@@ -84,11 +70,11 @@ const Blog = (props) => {
     return (
         <div>
             <img src={props.blog.attributes.img} alt=""/>
-            <h1>{props.blog.attributes.title}</h1>
+            {/* <h1>{props.blog.attributes.title}</h1>
             <h4>By: {props.blog.attributes.user}</h4>
             <p>
                 {props.blog.attributes.content}
-            </p>
+            </p> */}
 
             <button>+ New Comment</button>
             <form 
