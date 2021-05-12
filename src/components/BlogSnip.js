@@ -31,7 +31,7 @@ const useStyles = makeStyles({
     marginBottom: 12,
   },
 });
-
+//{ attributes:{img, content, title}, id}
 export default function BlogSnip(props) {
   const classes = useStyles();
 
@@ -59,12 +59,12 @@ export default function BlogSnip(props) {
         >
           <YoutubeSearchedForOutlinedIcon />
         </IconButton>
-        <IconButton aria-label='edit'>
-          <EditIcon
+        <IconButton
           component={Link}
           to={`/blogs/edit/${props.blog.id}`}
           aria-label='edit'
-          />
+        >
+          <EditIcon />
         </IconButton>
         <IconButton aria-label='delete'>
           <DeleteForeverIcon />

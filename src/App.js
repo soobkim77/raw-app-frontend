@@ -100,13 +100,13 @@ class App extends React.Component {
     fetch(BLOGURL, configObj)
       .then((r) => r.json())
       .then((resp) => {
-        console.log(resp);
         this.setState({ blogs: resp.data });
       });
   };
 
   handleSubmit = (e, title, content, img, id) => {
     e.preventDefault();
+   
     const body = {
       blog: {
         title,
@@ -114,6 +114,7 @@ class App extends React.Component {
         img,
       },
     };
+
     const configObj = {
       method: "PATCH",
       headers: {
@@ -125,10 +126,26 @@ class App extends React.Component {
     
     fetch(BLOGURL + "/" + id, configObj)
       .then((r) => r.json())
-      .then((blog) => this.setState({ blog }, ))
-      .catch((e) => console.error("error: ", e));
+      .then((blog) => this.helpEdit(blog))
+        .catch((e) => console.error("error: ", e));
   };
 
+  helpEdit = (blog) => {
+    this.setState((prevState) => {
+      const newBlogs = [...prevState.blogs];
+      const index = newBlogs.findIndex((el) => el.id === blog.data.id)
+      newBlogs[index] = blog.data;
+      return {
+        ...prevState,
+        blogs: newBlogs
+      }
+    });
+  }
+
+componentDidMount(){
+this.fetchBlogs()
+}
+  
   render() {
     return (
       <div className='App'>
