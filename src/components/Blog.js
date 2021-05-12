@@ -7,33 +7,71 @@ import Comment from './Comment'
 
 const URL = "http://localhost:3000/comments"
 
+// const deleteComment = (comment) => {
+//     let configObj = {
+//       method: "DELETE",
+//       headers: {
+//         "Content-Type": "application/json",
+//         "Authorization": `Bearer ${localStorage.getItem("jwt")}`
+//       }
+//     }
+//     fetch(`http://localhost:3000/comments/${comment.id}`, configObj)
+//     .then(r => r.json()) 
+// }
 
 
-const submitComment = (e, cont, blogID) => {
-    e.preventDefault();
-    
-    const bod = {
-            content: cont,
-            blog_id: blogID
-    }
-
-    const configObj = {
-        method: "POST",
-        headers: {
-          "Content-Type": "Application/json",
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`
-          },
-        body: JSON.stringify(bod)
-    };
-    fetch(URL, configObj)
-    .then(r => r.json())
-    .then(data => console.log(data))
-}
 
 
 const Blog = (props) => {
     const [content, setContent] = useState();
+    const [comments, setComments] = useState(props.blog.attributes.comments.data)
     const classes = useStyles();
+
+    const submitComment = (e, cont, blogID) => {
+        e.preventDefault();
+        
+        const bod = {
+                content: cont,
+                blog_id: blogID
+        }
+    
+        const configObj = {
+            method: "POST",
+            headers: {
+              "Content-Type": "Application/json",
+              Authorization: `Bearer ${localStorage.getItem("jwt")}`
+              },
+            body: JSON.stringify(bod)
+        };
+        fetch(URL, configObj)
+        .then(r => r.json())
+        .then(resp => {
+            let x = [...comments, resp.data]
+            setComments(x)
+        }
+        )
+    }
+
+    const deleteComment = (commentID) => {
+        let configObj = {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("jwt")}`
+          }
+        }
+        fetch(`http://localhost:3000/comments/${commentID}`, configObj)
+        .then(r => r.json()) 
+    }
+
+    const handleDelete = (commentID) =>{
+        setComments(comments.filter(x => x.id !== commentID))
+    }
+
+    const combinedDelete = (id) => {
+        handleDelete(id);
+        deleteComment(id);
+    }
 
     const handleChange = (event, type) => {
         let stateMap = {
@@ -77,9 +115,9 @@ const Blog = (props) => {
                 </Button>
             </form>
             <div>
-                {props.blog.attributes.comments.data.map(comment =>{
+                {comments.map(comment =>{
                     return (
-                       <Comment comment={comment}/>
+                       <Comment comment={comment} deleteCom={combinedDelete}/>
                     )
                 })}
             </div>

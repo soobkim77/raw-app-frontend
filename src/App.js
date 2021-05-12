@@ -101,11 +101,11 @@ class App extends React.Component {
     fetch(BLOGURL, configObj)
     .then(r => r.json())
     .then(resp => {
-      console.log(resp)
       this.setState({blogs: resp.data})
-    })
+    })}
+
     
-  }
+  
   
   render() {
     return (
@@ -126,7 +126,7 @@ class App extends React.Component {
               <BlogPage data={this.fetchBlogs} blogs={this.state.blogs} showBlog={this.showBlog} />
             )}
           />
-          <Route exact path='/blogs/:id' render={() => <Blog blog={this.state.blog} />} />
+          <Route exact path='/blogs/:id' render={() => <Blog blog={this.state.blog} deleteCom={this.deleteComment}/>} />
           <Route exact path='/blogs/create' component={CreateBlogForm} />
           <Route exact path='/blog/edit/:id' render={(routerProps) => {
                let blog = this.state.blogs.find(

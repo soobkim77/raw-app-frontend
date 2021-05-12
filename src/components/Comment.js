@@ -1,4 +1,5 @@
-import {Card, CardContent, Typography, makeStyles} from '@material-ui/core'
+import {Card, CardContent, Typography, makeStyles, IconButton} from '@material-ui/core';
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 
 const useStyles = makeStyles({
     root: {
@@ -18,7 +19,7 @@ const useStyles = makeStyles({
 });
 
 
-const Comment = ({comment}) => {
+const Comment = ({comment, deleteCom}) => {
 
     const classes = useStyles();
 
@@ -31,7 +32,11 @@ const Comment = ({comment}) => {
                 <Typography className={classes.title} color="textSecondary" gutterBottom>
                     {comment.attributes.content}
                 </Typography>
+                <IconButton onClick={() => deleteCom(comment.id)}>
+                  <DeleteOutlinedIcon/>
+                </IconButton>
             </CardContent>
+            
         </Card>
     )
 }
