@@ -3,45 +3,62 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+import Comment from './Comment'
 
 
 const URL = "http://localhost:3000/comments"
-const defaultImg =
-  "https://aliceasmartialarts.com/wp-content/uploads/2017/04/default-image.jpg";
-
-
-const submitComment = (e, cont, blogID) => {
-    e.preventDefault();
-    
-    const bod = {
-            content: cont,
-            blog_id: blogID
-    }
-    console.log(JSON.stringify(bod))
-    const configObj = {
-        method: "POST",
-        headers: {
-          "Content-Type": "Application/json",
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`
-          },
-        body: JSON.stringify(bod)
-    };
-    fetch(URL, configObj)
-    .then(r => r.json())
-    .then(data => console.log(data))
-}
-
 
 const Blog = (props) => {
     const [content, setContent] = useState();
+    const [comments, setComments] = useState(props.blog.attributes.comments.data)
     const classes = useStyles();
-  debugger
-  
-    const img =
-       Object.keys(props.blog).length === 0
-        ? defaultImg
-        : props.blog.attributes.img;
-  
+
+    const submitComment = (e, cont, blogID) => {
+        e.preventDefault();
+        
+        const bod = {
+                content: cont,
+                blog_id: blogID
+        }
+    
+        const configObj = {
+            method: "POST",
+            headers: {
+              "Content-Type": "Application/json",
+              Authorization: `Bearer ${localStorage.getItem("jwt")}`
+              },
+            body: JSON.stringify(bod)
+        };
+        fetch(URL, configObj)
+        .then(r => r.json())
+        .then(resp => {
+            let x = [...comments, resp.data]
+            setComments(x)
+        }
+        )
+    }
+
+    const deleteComment = (commentID) => {
+        let configObj = {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("jwt")}`
+          }
+        }
+        fetch(`http://localhost:3000/comments/${commentID}`, configObj)
+        .then(r => r.json()) 
+    }
+
+    const handleDelete = (commentID) =>{
+        setComments(comments.filter(x => x.id !== commentID))
+    }
+
+    const combinedDelete = (id) => {
+        handleDelete(id);
+        deleteComment(id);
+    }
+
     const handleChange = (event, type) => {
         let stateMap = {
           content: (event) => setContent(event.target.value)
@@ -52,7 +69,7 @@ const Blog = (props) => {
     
     return (
         <div>
-            <img src={img} alt=""/>
+            <img src={props.blog.attributes.img} alt=""/>
             {/* <h1>{props.blog.attributes.title}</h1>
             <h4>By: {props.blog.attributes.user}</h4>
             <p>
@@ -83,6 +100,13 @@ const Blog = (props) => {
                     Publish
                 </Button>
             </form>
+            <div>
+                {comments.map(comment =>{
+                    return (
+                       <Comment comment={comment} deleteCom={combinedDelete}/>
+                    )
+                })}
+            </div>
         </div>
     )
 }
