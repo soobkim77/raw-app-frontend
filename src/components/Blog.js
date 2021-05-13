@@ -5,13 +5,59 @@ import { makeStyles } from "@material-ui/core/styles";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import Comment from './Comment'
 
-
+const LIKEURL = "http://localhost:3000/likes"
 const URL = "http://localhost:3000/comments"
 
 const Blog = (props) => {
     const [content, setContent] = useState();
     const [comments, setComments] = useState(props.blog.attributes.comments.data)
+    const [blogLikes, setBlogLikes] = useState(props.blog.attributes.likecount)
+    const [blogBoolean, setBlogBoolean] = useState(false)
+    const [likeBoolean, setLikeBoolean] = useState(false)
     const classes = useStyles();
+
+    const newLikeBlog = () => {
+        const body = {
+            likeable_id: props.blog.id,
+            likeable_type: "Blog"
+        };
+
+        const configObj = {
+            method: "POST",
+            headers: {
+              "Content-Type": "Application/json",
+              Authorization: `Bearer ${localStorage.getItem("jwt")}`
+              },
+            body: JSON.stringify(body)
+        };
+
+        fetch(LIKEURL, configObj)
+        .then(r => r.json())
+        .then(resp => {
+            if (resp.message){
+                setLikeBoolean(true)
+            } else {
+                setBlogBoolean(true)
+                setBlogLikes(blogLikes + 1)
+            }
+        } )
+        
+    }
+
+    const deleteLikeBlog = (blogID) => {
+        const configObj = {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "Application/json",
+              Authorization: `Bearer ${localStorage.getItem("jwt")}`
+              },
+            body: JSON.stringify({
+                likeable_id: blogID,
+                likeable_type: "Blog"
+            })
+        };
+        fetch(LIKEURL + "/" + 1, configObj)
+    }
 
     const submitComment = (e, cont, blogID) => {
         e.preventDefault();
@@ -70,11 +116,12 @@ const Blog = (props) => {
     return (
         <div>
             <img src={props.blog.attributes.img} alt=""/>
-            {/* <h1>{props.blog.attributes.title}</h1>
+            <h1>{props.blog.attributes.title}</h1>
             <h4>By: {props.blog.attributes.user}</h4>
+            <span> Liked by {blogLikes} people</span>
             <p>
                 {props.blog.attributes.content}
-            </p> */}
+            </p>
 
             <button>+ New Comment</button>
             <form 
@@ -100,10 +147,12 @@ const Blog = (props) => {
                     Publish
                 </Button>
             </form>
+            {blogBoolean ? null : <button onClick={() => newLikeBlog()}>LIKE ME PLS!!!</button>}
+            {likeBoolean ? <p>You've already liked this post!</p> : null}
             <div>
                 {comments.map(comment =>{
                     return (
-                       <Comment comment={comment} deleteCom={combinedDelete}/>
+                       <Comment key={comment.id} comment={comment} deleteCom={combinedDelete} />
                     )
                 })}
             </div>
