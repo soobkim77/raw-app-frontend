@@ -14,8 +14,11 @@ import BookOutlinedIcon from "@material-ui/icons/BookOutlined";
 import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import { Link } from 'react-router-dom';
+import { spacing } from "@material-ui/system";
+
 const useStyles = makeStyles((theme) => ({
   grow: {
+    paddingBottom: 15,
     flexGrow: 1,
   },
   menuButton: {
@@ -78,6 +81,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function NavBar() {
+ 
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
