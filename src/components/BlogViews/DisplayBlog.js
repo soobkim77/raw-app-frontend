@@ -13,6 +13,8 @@ import Typography from "@material-ui/core/Typography";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ThumbDownIcon from '@material-ui/icons/ThumbDown';
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -39,12 +41,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 //
 export default function DisplayBlog({
-  blog: { img, content, title, user, id, created_at },
+  blog: { img, content, title, user, id, created_at},
+  like,
+  likes,
+  likeBool,
+  unlike,
+  unlikeBool
 }) {
 
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(true);
-    console.log(created_at)
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
@@ -69,10 +75,18 @@ export default function DisplayBlog({
         <Typography variant='body2' color='textSecondary' component='p'>
           {created_at.split("T")[0]}
         </Typography>
+        <Typography variant='body2' color='textSecondary' component='p'>
+          {likes} likes
+          {likeBool? <p>You've already liked this post!</p> : null}
+          {unlikeBool? <p>You haven't like this post yet!</p> : null}
+        </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label='add to favorites'>
+        <IconButton aria-label='like blog' onClick={() => like()}>
           <FavoriteIcon />
+        </IconButton>
+        <IconButton aria-label='like blog' onClick={() => unlike(id)}>
+          <ThumbDownIcon />
         </IconButton>
         <IconButton aria-label='share'>
           <ShareIcon />
