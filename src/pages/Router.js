@@ -14,6 +14,7 @@ export default function Router({blogs}) {
     return (
       <>
         <Switch>
+          {/* <Route path='/login' component={Login} /> */}
           <Route
             exact
             path='/blogs'
@@ -29,11 +30,11 @@ export default function Router({blogs}) {
               <EditBlogForm />
             }
           ></Route>
-          <Route path='/profile' component={Profile} />
-          <Route path='/login' component={Login} />
+          <Route path='/profile' component={Profile} /> 
+          {/* <Route path='/login' component={Login} /> */}
           <Route path='/signup' component={SignUp} />
           <Route path='/home' component={Home} />
-          <Route exact path='/' component={Login}/>
+          {/* <Route exact path='/' component={Login}/> */}
           <Route path='*'>
             <Error />
           </Route>

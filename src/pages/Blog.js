@@ -37,8 +37,8 @@ class Blog extends React.Component {
   render() {
     return (
       <>
-        <NavBar/>
-        <Router blogs={this.sanitizeBlogs(this.state.blogs)}/>
+        <NavBar loginHelper={this.props.loginHelper}/>
+        <Router blogs={this.sanitizeBlogs(this.state.blogs) } />
       </>
     );
   }

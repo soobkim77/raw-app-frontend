@@ -56,7 +56,7 @@ const SignUp = (props) => {
 
   const handleSubmit = (event) => {
     createUser(event);
-    history.push("/login/");
+    history.push("/");
   }
 
   return (

@@ -6,10 +6,8 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
-import Link from "@material-ui/core/Link";
 import Comment from './Comment'
 
-const URL = "http://localhost:3000/blogs/";
 
 const initialState = {
   content:
@@ -32,6 +30,13 @@ const useStyles = makeStyles((theme) => ({
   control: {
     padding: theme.spacing(2),
   },
+  butt: {
+    marginTop: ".5em"
+  },
+  commentForm: {
+    marginTop: ".5em",
+    marginBottom: ".5em"
+  }
 }));
 
 const LIKEURL = "http://localhost:3000/likes"
@@ -72,6 +77,7 @@ export default function MainBlog() {
         img: data.data.attributes.img,
         title: data.data.attributes.title,
         user: data.data.attributes.user,
+        likes: data.data.attributes.likecount
       };
       
       const newComments = data.data.attributes.comments.data;
@@ -187,52 +193,71 @@ export default function MainBlog() {
 
 
   return (
-    <Grid
-      container
-      spacing={0}
-      direction='column'
-      alignItems='center'
-      justify='center'
-      style={{ minHeight: "80vh" }}
-    >
-      <Grid item xs={8}>
-        <DisplayBlog blog={blog} />
+    <div>
+      <Grid
+        container
+        spacing={0}
+        direction='column'
+        alignItems='center'
+        justify='center'
+        style={{ minHeight: "80vh" }}
+      >
+        <Grid item xs={8}>
+          <DisplayBlog 
+            blog={blog} 
+            like={newLikeBlog} 
+            likes={blogLikes} 
+            unlike={deleteLikeBlog} 
+            unlikeBool={unlikeBoolean} 
+            likeBool={likeBoolean}/>
+          </Grid>
         </Grid>
-    </Grid>
-    <Grid>
-        <span>{blogLikes} likes</span>
-      <Button variant="contained" onClick={() => newLikeBlog()}>Like!</Button>
-      {likeBoolean ? <p>You've already liked this post!</p> : null}
-      <Grid>
-        <form 
-          onSubmit={(e) => submitComment(e, newComm, blog.id)}
-          className={classes.root}
-          noValidate
-          autoComplete='off'
-          >
-              <TextField
-              placeholder='New Comment'
-              multiline
-              value={newComm}
-              onChange={(event) => handleChange(event, "content")}
-              variant='outlined'
-              />
-              <Button
-                  type="submit"
-                  variant='contained'
-                  color='default'
-                  className={classes.button}
-                  startIcon={<CloudUploadIcon />}
-              >
-                  Publish
-              </Button>
-          </form>
-        {comments.map(comment =>{
-              return (
-                  <Comment key={comment.id} comment={comment} deleteCom={combinedDelete} />
-              )
-        })}
+      
+        <Grid
+          container
+          direction='column'
+          alignItems='center'
+          spacing={0}
+          justify='center'
+          className={classes.commentForm}
+        >
+          <form 
+            onSubmit={(e) => submitComment(e, newComm, blog.id)}
+            className={classes.root}
+            noValidate
+            autoComplete='off'
+            >
+                <TextField
+                placeholder='New Comment'
+                multiline
+                value={newComm}
+                onChange={(event) => handleChange(event, "content")}
+                variant='outlined'
+                />
+                <Button
+                    type="submit"
+                    variant='contained'
+                    color='default'
+                    className={classes.butt}
+                    startIcon={<CloudUploadIcon />}
+                >
+                    Publish
+                </Button>
+            </form>
+        </Grid>
+        <Grid
+          container
+          direction='column'
+          alignItems='center'
+          spacing={0}
+          justify='center'
+        >
+          {comments.map(comment =>{
+                return (
+                    <Comment key={comment.id} comment={comment} deleteCom={combinedDelete} />
+                )
+          })}
       </Grid>
-    </Grid>
+    </div>
   );
 }
