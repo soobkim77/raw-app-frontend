@@ -50,6 +50,7 @@ const Comment = ({comment, deleteCom}) => {
       .then(res => {
         if(res.message){
           setLikedComment(true)
+          setTimeout(()=>setLikedComment(false), 3000)
         } else {
           setCommentBoolean(true)
           setCommentLikes(commentLikes + 1)
