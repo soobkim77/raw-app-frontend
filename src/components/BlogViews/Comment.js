@@ -71,7 +71,6 @@ const Comment = ({comment, deleteCom}) => {
                     {commentLikes} <IconButton onClick={() => newLikeComment(comment.id)}><ThumbUpIcon/></IconButton> 
                     {likedComment ? <p>You've already liked this comment </p> : null}
                 </Typography>
-                {commentBoolean ? null : <button> </button>}
                 <IconButton onClick={() => deleteCom(comment.id)}>
                   <DeleteOutlinedIcon/>
                 </IconButton>
