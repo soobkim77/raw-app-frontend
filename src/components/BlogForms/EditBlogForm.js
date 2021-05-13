@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { Fragment } from "react";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 /*  Material UI  */
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
@@ -9,12 +8,12 @@ import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 
 
 
-const EditBlogForm = ({ blog: {attributes: { content, img, title },id}, handleSubmit}) => {
+const EditBlogForm = ({ blog: { attributes: { content, img, title }, id }, handleSubmit }) => {
   const classes = useStyles();
   const [tle, setTitle] = useState(title);
   const [con, setContent] = useState(content);
   const [image, setImage] = useState(img);
-
+  let history = useHistory();
 
   const handleChange = (event, type) => {
     let stateMap = {
@@ -30,6 +29,7 @@ const EditBlogForm = ({ blog: {attributes: { content, img, title },id}, handleSu
       <form
         onSubmit={(e) => {
           handleSubmit(e, tle, con, image, id);
+           history.push("/blogs/");
         }}
         className={classes.root}
         noValidate
@@ -57,8 +57,6 @@ const EditBlogForm = ({ blog: {attributes: { content, img, title },id}, handleSu
           variant='outlined'
         />
         <Button
-          component={Link}
-          to={`/blogs/${id}`}
           type='submit'
           variant='contained'
           color='default'
