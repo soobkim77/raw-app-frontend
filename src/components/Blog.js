@@ -12,8 +12,9 @@ const Blog = (props) => {
     const [content, setContent] = useState();
     const [comments, setComments] = useState(props.blog.attributes.comments.data)
     const [blogLikes, setBlogLikes] = useState(props.blog.attributes.likecount)
-    const [blogBoolean, setBlogBoolean] = useState(false)
+    // const [blogBoolean, setBlogBoolean] = useState(false)
     const [likeBoolean, setLikeBoolean] = useState(false)
+    const [unlikeBoolean, setUnlikeBoolean] = useState(false)
     const classes = useStyles();
 
     const newLikeBlog = () => {
@@ -26,7 +27,7 @@ const Blog = (props) => {
             method: "POST",
             headers: {
               "Content-Type": "Application/json",
-              Authorization: `Bearer ${localStorage.getItem("jwt")}`
+              "Authorization": `Bearer ${localStorage.getItem("jwt")}`
               },
             body: JSON.stringify(body)
         };
@@ -36,11 +37,17 @@ const Blog = (props) => {
         .then(resp => {
             if (resp.message){
                 setLikeBoolean(true)
+                setTimeout(()=>setLikeBoolean(false), 3000)
+                // console.log(resp)
             } else {
-                setBlogBoolean(true)
+                // setBlogBoolean(true)
+                
+                console.log(resp)
                 setBlogLikes(blogLikes + 1)
+                console.log(blogLikes)
             }
         } )
+        
         
     }
 
@@ -57,6 +64,15 @@ const Blog = (props) => {
             })
         };
         fetch(LIKEURL + "/" + 1, configObj)
+        .then(r => r.json())
+        .then(resp => {
+            if(resp.status === 500){
+                setUnlikeBoolean(true)
+                setTimeout(()=>setUnlikeBoolean(false), 3000)
+            } else {
+                setBlogLikes(blogLikes - 1)
+            }
+        })
     }
 
     const submitComment = (e, cont, blogID) => {
@@ -93,7 +109,6 @@ const Blog = (props) => {
           }
         }
         fetch(`http://localhost:3000/comments/${commentID}`, configObj)
-        .then(r => r.json()) 
     }
 
     const handleDelete = (commentID) =>{
@@ -147,8 +162,9 @@ const Blog = (props) => {
                     Publish
                 </Button>
             </form>
-            {blogBoolean ? null : <button onClick={() => newLikeBlog()}>LIKE ME PLS!!!</button>}
-            {likeBoolean ? <p>You've already liked this post!</p> : null}
+            {/* {blogBoolean ? null : <button onClick={() => newLikeBlog()}>LIKE ME PLS!!!</button>} */}
+            <button onClick={() => newLikeBlog()}>LIKE</button><button onClick={() => deleteLikeBlog(props.blog.id)}>Unlike</button>
+            {likeBoolean ? <p>You've already liked this post!</p> : null}{unlikeBoolean ? <p>You have not liked this post!</p> : null}
             <div>
                 {comments.map(comment =>{
                     return (
