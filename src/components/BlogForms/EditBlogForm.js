@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Fragment } from "react";
 import { useHistory } from "react-router-dom";
 /*  Material UI  */
 import TextField from "@material-ui/core/TextField";
@@ -9,7 +8,7 @@ import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 
 
 
-const EditBlogForm = ({ blog: {attributes: { content, img, title },id}, handleSubmit}) => {
+const EditBlogForm = ({ blog: { attributes: { content, img, title }, id }, handleSubmit }) => {
   const classes = useStyles();
   const [tle, setTitle] = useState(title);
   const [con, setContent] = useState(content);
@@ -31,7 +30,6 @@ const EditBlogForm = ({ blog: {attributes: { content, img, title },id}, handleSu
         onSubmit={(e) => {
           handleSubmit(e, tle, con, image, id);
            history.push("/blogs/");
-          //submitHelper();
         }}
         className={classes.root}
         noValidate
