@@ -5,7 +5,7 @@ import Router from "./Router";
 
 const BLOGURL = "http://localhost:3000/blogs";
 
-const Blogs = () => {
+const Blogs = (props) => {
   const history = useHistory();
   const [blogs, setBlogs] = useState([]);
 
@@ -43,11 +43,10 @@ const Blogs = () => {
     history.push(`/blogs/${blog.data.id}`);
   };
 
-
   return (
     <>
-      <NavBar />
-      <Router blogs={sanitizeBlogs(blogs)} edit={helpEdit} />
+      <NavBar loginHelper={props.loginHelper} />
+      <Router edit={helpEdit} blogs={sanitizeBlogs(blogs)} />
     </>
   );
 };

@@ -6,7 +6,7 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
-import Comment from './Comment'
+import Comment from "./Comment";
 
 const initialState = {
   content:
@@ -29,21 +29,28 @@ const useStyles = makeStyles((theme) => ({
   control: {
     padding: theme.spacing(2),
   },
+  butt: {
+    marginTop: ".5em",
+  },
+  commentForm: {
+    marginTop: ".5em",
+    marginBottom: ".5em",
+  },
 }));
 
-const LIKEURL = "http://localhost:3000/likes"
+const LIKEURL = "http://localhost:3000/likes";
 const URL = "http://localhost:3000/blogs/";
 const COMMURL = "http://localhost:3000/comments/";
 
 export default function MainBlog() {
-    const classes = useStyles();
-    const [blog, setBlog] = useState(initialState);
-    const [comments, setComments] = useState([]);
-    const { id } = useParams();
-    const [blogLikes, setBlogLikes] = useState()
-    const [likeBoolean, setLikeBoolean] = useState(false)
-    const [unlikeBoolean, setUnlikeBoolean] = useState(false)
-    const [newComm, setNewComm] = useState();
+  const classes = useStyles();
+  const [blog, setBlog] = useState(initialState);
+  const [comments, setComments] = useState([]);
+  const { id } = useParams();
+  const [blogLikes, setBlogLikes] = useState();
+  const [likeBoolean, setLikeBoolean] = useState(false);
+  const [unlikeBoolean, setUnlikeBoolean] = useState(false);
+  const [newComm, setNewComm] = useState();
 
   useEffect(() => {
     let configObj = {
@@ -60,174 +67,191 @@ export default function MainBlog() {
       .catch((e) => console.error("e:", e));
   }, []);
 
-    const sanitize = (data) => {
-      
-      const newBlog = {
-        id: data.data.id,
-        content: data.data.attributes.content,
-        created_at: data.data.attributes.created_at,
-        img: data.data.attributes.img,
-        title: data.data.attributes.title,
-        user: data.data.attributes.user,
-      };
-      const newComments = data.data.attributes.comments.data;
-      setBlog(newBlog);
-      setComments(newComments);
-      setBlogLikes(data.data.attributes.likecount)
+  const sanitize = (data) => {
+    const newBlog = {
+      id: data.data.id,
+      content: data.data.attributes.content,
+      created_at: data.data.attributes.created_at,
+      img: data.data.attributes.img,
+      title: data.data.attributes.title,
+      user: data.data.attributes.user,
+      likes: data.data.attributes.likecount,
+    };
+    const newComments = data.data.attributes.comments.data;
+    setBlog(newBlog);
+    setComments(newComments);
+    setBlogLikes(data.data.attributes.likecount);
   };
 
-    const deleteComment = (commentID) => {
-      let configObj = {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${localStorage.getItem("jwt")}`
+  const deleteComment = (commentID) => {
+    let configObj = {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+      },
+    };
+    fetch(`http://localhost:3000/comments/${commentID}`, configObj);
+  };
+
+  const handleDelete = (commentID) => {
+    setComments(comments.filter((x) => x.id !== commentID));
+  };
+
+  const combinedDelete = (id) => {
+    handleDelete(id);
+    deleteComment(id);
+  };
+
+  const newLikeBlog = () => {
+    const body = {
+      likeable_id: blog.id,
+      likeable_type: "Blog",
+    };
+
+    const configObj = {
+      method: "POST",
+      headers: {
+        "Content-Type": "Application/json",
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+      },
+      body: JSON.stringify(body),
+    };
+
+    fetch(LIKEURL, configObj)
+      .then((r) => r.json())
+      .then((resp) => {
+        if (resp.message) {
+          setLikeBoolean(true);
+          setTimeout(() => setLikeBoolean(false), 3000);
+        } else {
+          setBlogLikes(blogLikes + 1);
         }
-      }
-      fetch(`http://localhost:3000/comments/${commentID}`, configObj)
-    }
-      
-    const handleDelete = (commentID) =>{
-      setComments(comments.filter(x => x.id !== commentID))
-    }
+      });
+  };
 
-    const combinedDelete = (id) => {
-      handleDelete(id);
-      deleteComment(id);
-    }
-
-    const newLikeBlog = () => {
-        const body = {
-            likeable_id: blog.id,
-            likeable_type: "Blog"
-        };
-
-        const configObj = {
-            method: "POST",
-            headers: {
-              "Content-Type": "Application/json",
-              "Authorization": `Bearer ${localStorage.getItem("jwt")}`
-              },
-            body: JSON.stringify(body)
-        };
-
-        fetch(LIKEURL, configObj)
-        .then(r => r.json())
-        .then(resp => {
-            if (resp.message){
-                setLikeBoolean(true)
-                setTimeout(()=>setLikeBoolean(false), 3000)
-            } else {
-                setBlogLikes(blogLikes + 1)
-            }
-        } )
-        
-        
-    }
-
-    const deleteLikeBlog = (blogID) => {
-        const configObj = {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "Application/json",
-              Authorization: `Bearer ${localStorage.getItem("jwt")}`
-              },
-            body: JSON.stringify({
-                likeable_id: blogID,
-                likeable_type: "Blog"
-            })
-        };
-        fetch(LIKEURL + "/" + 1, configObj)
-        .then(r => r.json())
-        .then(resp => {
-            if(resp.status === 500){
-                setUnlikeBoolean(true)
-                setTimeout(()=>setUnlikeBoolean(false), 3000)
-            } else {
-                setBlogLikes(blogLikes - 1)
-            }
-        })
-    }
-
-    const submitComment = (e, cont, blogID) => {
-        e.preventDefault();
-        
-        const bod = {
-                content: cont,
-                blog_id: blogID
+  const deleteLikeBlog = (blogID) => {
+    const configObj = {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "Application/json",
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+      },
+      body: JSON.stringify({
+        likeable_id: blogID,
+        likeable_type: "Blog",
+      }),
+    };
+    fetch(LIKEURL + "/" + 1, configObj)
+      .then((r) => r.json())
+      .then((resp) => {
+        if (resp.status === 500) {
+          setUnlikeBoolean(true);
+          setTimeout(() => setUnlikeBoolean(false), 3000);
+        } else {
+          setBlogLikes(blogLikes - 1);
         }
-        const configObj = {
-            method: "POST",
-            headers: {
-              "Content-Type": "Application/json",
-              Authorization: `Bearer ${localStorage.getItem("jwt")}`
-              },
-            body: JSON.stringify(bod)
-        };
-        fetch(COMMURL, configObj)
-        .then(r => r.json())
-        .then(resp => {
-            let x = [...comments, resp.data]
-            setComments(x)
-        }
-        )
-    }
+      });
+  };
 
-    const handleChange = (event) => {
-        setNewComm(event.target.value)
-      };
-      
+  const submitComment = (e, cont, blogID) => {
+    e.preventDefault();
 
+    const bod = {
+      content: cont,
+      blog_id: blogID,
+    };
+    const configObj = {
+      method: "POST",
+      headers: {
+        "Content-Type": "Application/json",
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+      },
+      body: JSON.stringify(bod),
+    };
+    fetch(COMMURL, configObj)
+      .then((r) => r.json())
+      .then((resp) => {
+        let x = [...comments, resp.data];
+        setComments(x);
+      });
+  };
+
+  const handleChange = (event) => {
+    setNewComm(event.target.value);
+  };
 
   return (
-    <>
-    <Grid
-      container
-      spacing={0}
-      direction='column'
-      alignItems='center'
-      justify='center'
-      style={{ minHeight: "80vh" }}
-    >
-      <Grid item xs={8}>
-        <DisplayBlog blog={blog} />
+    <div>
+      <Grid
+        container
+        spacing={0}
+        direction='column'
+        alignItems='center'
+        justify='center'
+        style={{ minHeight: "80vh" }}
+      >
+        <Grid item xs={8}>
+          <DisplayBlog
+            blog={blog}
+            like={newLikeBlog}
+            likes={blogLikes}
+            unlike={deleteLikeBlog}
+            unlikeBool={unlikeBoolean}
+            likeBool={likeBoolean}
+          />
         </Grid>
-    </Grid>
-    <Grid>
-        <span>{blogLikes} likes</span>
-      <Button variant="contained" onClick={() => newLikeBlog()}>Like!</Button>
-      {likeBoolean ? <p>You've already liked this post!</p> : null}
-      <Grid>
-        <form 
+      </Grid>
+
+      <Grid
+        container
+        direction='column'
+        alignItems='center'
+        spacing={0}
+        justify='center'
+        className={classes.commentForm}
+      >
+        <form
           onSubmit={(e) => submitComment(e, newComm, blog.id)}
           className={classes.root}
           noValidate
           autoComplete='off'
+        >
+          <TextField
+            placeholder='New Comment'
+            multiline
+            value={newComm}
+            onChange={(event) => handleChange(event, "content")}
+            variant='outlined'
+          />
+          <Button
+            type='submit'
+            variant='contained'
+            color='default'
+            className={classes.butt}
+            startIcon={<CloudUploadIcon />}
           >
-              <TextField
-              placeholder='New Comment'
-              multiline
-              value={newComm}
-              onChange={(event) => handleChange(event, "content")}
-              variant='outlined'
-              />
-              <Button
-                  type="submit"
-                  variant='contained'
-                  color='default'
-                  className={classes.button}
-                  startIcon={<CloudUploadIcon />}
-              >
-                  Publish
-              </Button>
-          </form>
-        {comments.map(comment =>{
-              return (
-                  <Comment key={comment.id} comment={comment} deleteCom={combinedDelete} />
-              )
+            Publish
+          </Button>
+        </form>
+      </Grid>
+      <Grid
+        container
+        direction='column'
+        alignItems='center'
+        spacing={0}
+        justify='center'
+      >
+        {comments.map((comment) => {
+          return (
+            <Comment
+              key={comment.id}
+              comment={comment}
+              deleteCom={combinedDelete}
+            />
+          );
         })}
       </Grid>
-      </Grid>
-      </>
+    </div>
   );
 }

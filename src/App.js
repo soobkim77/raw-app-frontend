@@ -1,11 +1,28 @@
-import React from 'react'
-import Blogs from './pages/Blogs'
-
+import React, { useState } from "react";
+import Blogs from "./pages/Blogs";
+import Login from "./pages/Login";
+import { Switch, Route } from "react-router-dom";
+import SignUp from "./pages/SignUp";
 export default function App() {
-    return (
-          <>
-         {/* Add Login Here */}
-         <Blogs/>   
-        </>
-    )
-};
+  const [loggedIn, isLoggedIn] = useState(true);
+
+  const loginHelper = () => {
+    isLoggedIn(!loggedIn);
+  };
+
+  return (
+    <>
+      <Switch>
+        {loggedIn && (
+          <Route exact path='/'>
+            <Login loginHelper={loginHelper} />
+          </Route>
+        )}
+        <Route path='/blogs'>
+          <Blogs loginHelper={loginHelper} />
+        </Route>
+        <Route exact path='/signup' component={SignUp} />
+      </Switch>
+    </>
+  );
+}

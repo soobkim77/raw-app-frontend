@@ -13,7 +13,8 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import BookOutlinedIcon from "@material-ui/icons/BookOutlined";
 import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
 import MoreIcon from "@material-ui/icons/MoreVert";
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -79,8 +80,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function NavBar() {
- 
+export default function NavBar(props) {
+  const history = useHistory()
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -105,6 +106,12 @@ export default function NavBar() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const handleLogOut = () => {
+    localStorage.clear()
+    props.loginHelper()
+    history.push("/")
+  }
+
   const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
@@ -118,6 +125,7 @@ export default function NavBar() {
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={() => handleLogOut()}>Logout</MenuItem>
     </Menu>
   );
 

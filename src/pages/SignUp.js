@@ -14,21 +14,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-//Create Action Route
+
 const USERURL = "http://localhost:3000/users";
 
 const SignUp = (props) => {
   const classes = useStyles();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmation, setConfirmation] = useState("");
   const history = useHistory();
 
   const handleChange = (event, type) => {
     let stateMap = {
       username: (event) => setUsername(event.target.value),
       password: (event) => setPassword(event.target.value),
-      confirm: (event) => setConfirmation(event.target.value),
     };
     stateMap[type](event);
   };
@@ -56,7 +54,7 @@ const SignUp = (props) => {
 
   const handleSubmit = (event) => {
     createUser(event);
-    history.push("/login/");
+    history.push("/");
   }
 
   return (
@@ -79,13 +77,6 @@ const SignUp = (props) => {
           label='Password'
           variant='outlined'
           value={password}
-        />
-        <TextField
-          onChange={(event) => handleChange(event, "confirm")}
-          id='confirmPassword'
-          label='Confirm Password'
-          variant='outlined'
-          value={confirmation}
         />
         <Button type='Submit' variant='outlined' form='login' color='primary'>
           Sign Up!
