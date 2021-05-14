@@ -206,8 +206,6 @@ export default function NavBar(props) {
               <BookOutlinedIcon />
             </IconButton>
             <IconButton
-              component={Link}
-              to={`/home`}
               aria-label='home'
               color='inherit'
             >

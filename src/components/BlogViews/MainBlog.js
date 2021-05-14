@@ -16,6 +16,7 @@ const initialState = {
   img: "https://picsum.photos/200/300",
   title: "Praise Kai!",
   user: "Miles Teg",
+  likes: 10,
 };
 
 const useStyles = makeStyles((theme) => ({

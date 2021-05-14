@@ -29,10 +29,12 @@ const initialState = {
 };
 
 export default function Profile() {
+  
   const [comments, setComments] = useState("Holds The Power!");
   const [blogs, setBlogs] = useState(initialState);
   const [name, setName] = useState("Kai");
   const classes = useStyles();
+
   useEffect(() => {
     let configObj = {
       method: "GET",

@@ -40,13 +40,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function DisplayBlog({ blog: { content, title, user, id, created_at }, likes }) {
-  
+export default function DisplayBlog({ blog: { content, title, user, id, likes, created_at } }) {
+
+ 
   const [heart, isHeart] = useState();
   const [thumb, isThumb] = useState();
-  const [like, setLike] = useState(1);
+  const [like, setLike] = useState(likes);
   const classes = useStyles();
-
 
   const likeHelper = () => {
     isHeart(true);

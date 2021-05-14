@@ -107,63 +107,68 @@ const SignUp = (props) => {
 
   return (
     <>
-    <Grid container component="main" className={classes.root2}>
+      <Grid container component='main' className={classes.root2}>
         <CssBaseline />
         <Grid item xs={false} sm={4} md={7} className={classes.image} />
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <AccountBoxIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Create an Account
-          </Typography>
-          <form className={classes.form} id='login' noValidate onSubmit={(e) => createUser(e)}>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              onChange={(event) => handleChange(event, "username")}
-              id='username'
-              label='Username'
-              name="username"
-              autoFocus
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              onChange={(event) => handleChange(event, "password")}
-              id='password'
-              label='Password'
-              type="password"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
+          <div className={classes.paper}>
+            <Avatar className={classes.avatar}>
+              <AccountBoxIcon />
+            </Avatar>
+            <Typography component='h1' variant='h5'>
               Create an Account
-            </Button>
-            <Grid container>
-              <Grid item>
-                <Link to="/" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
+            </Typography>
+            <form
+              className={classes.form}
+              id='login'
+              noValidate
+              onSubmit={(e) => handleSubmit(e)}
+            >
+              <TextField
+                variant='outlined'
+                margin='normal'
+                required
+                fullWidth
+                onChange={(event) => handleChange(event, "username")}
+                id='username'
+                label='Username'
+                name='username'
+                autoFocus
+              />
+              <TextField
+                variant='outlined'
+                margin='normal'
+                required
+                fullWidth
+                name='password'
+                onChange={(event) => handleChange(event, "password")}
+                id='password'
+                label='Password'
+                type='password'
+              />
+              <Button
+                type='submit'
+                fullWidth
+                variant='contained'
+                color='primary'
+                className={classes.submit}
+              >
+                Create an Account
+              </Button>
+              <Grid container>
+                <Grid item>
+                  <Link to='/' variant='body2'>
+                    {"Don't have an account? Sign Up"}
+                  </Link>
+                </Grid>
               </Grid>
-            </Grid>
-            <Box mt={5}>
-              <Copyright />
-            </Box>
-          </form>
-        </div>
+              <Box mt={5}>
+                <Copyright />
+              </Box>
+            </form>
+          </div>
+        </Grid>
       </Grid>
-    </Grid>
       {/* <form
         className={classes.root}
         id='login'

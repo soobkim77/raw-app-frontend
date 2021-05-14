@@ -161,38 +161,6 @@ const Login = (props) => {
               >
                Log In
               </Button>
-              <TextField
-                variant='outlined'
-                margin='normal'
-                required
-                fullWidth
-                onChange={(event) => handleChange(event, "username")}
-                id='username'
-                label='Username'
-                name='username'
-                autoFocus
-              />
-              <TextField
-                variant='outlined'
-                margin='normal'
-                required
-                fullWidth
-                name='password'
-                onChange={(event) => handleChange(event, "password")}
-                id='password'
-                color='#212121'
-                label='Password'
-                type='password'
-              />
-              <Button
-                type='submit'
-                fullWidth
-                variant='contained'
-                color='#212121'
-                className={classes.submit}
-              >
-                Sign In
-              </Button>
               <Grid container>
                 <Grid item>
                   <Link to='/signup' variant='body2'>
