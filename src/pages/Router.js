@@ -10,34 +10,34 @@ import Home from "./Home"
 import Login from "./Login"
 import SignUp from "./SignUp"
 
-export default function Router({blogs}) {
-    return (
-      <>
-        <Switch>
-          <Route
-            exact
-            path='/blogs'
-            render={(routerProps) => (
-              <BlogList {...routerProps} blogs={blogs} />
-            )}
-          />
-          <Route exact path='/blogs/create' component={CreateBlogForm} />
-          <Route path='/blogs/:id' children={<MainBlog />} />
-          <Route
-            path='/blogs/:id/edit'
-            component={
-              <EditBlogForm />
-            }
-          ></Route>
-          <Route path='/profile' component={Profile} />
-          <Route path='/login' component={Login} />
-          <Route path='/signup' component={SignUp} />
-          <Route path='/home' component={Home} />
-          <Route exact path='/' component={Login}/>
-          <Route path='*'>
-            <Error />
-          </Route>
-        </Switch>
-      </>
-    );
+export default function Router(props) {
+  return (
+    <>
+      <Switch>
+        <Route
+          path='/blogs/:id/edit'
+          render={(routerProps) => (
+            <EditBlogForm {...routerProps} edit={props.edit} />
+          )}
+        ></Route>
+        <Route
+          exact
+          path='/blogs'
+          render={(routerProps) => (
+            <BlogList {...routerProps} blogs={props.blogs} />
+          )}
+        />
+        <Route exact path='/blogs/create' component={CreateBlogForm} />
+        <Route path='/blogs/:id' children={<MainBlog />} />
+        <Route path='/profile' component={Profile} />
+        <Route path='/login' component={Login} />
+        <Route path='/signup' component={SignUp} />
+        <Route path='/home' component={Home} />
+        <Route exact path='/' component={Login} />
+        <Route path='*'>
+          <Error />
+        </Route>
+      </Switch>
+    </>
+  );
 }
