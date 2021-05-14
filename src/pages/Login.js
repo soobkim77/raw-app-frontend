@@ -4,10 +4,7 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-// import FormControlLabel from '@material-ui/core/FormControlLabel';
-// import Checkbox from '@material-ui/core/Checkbox';
 import {Link} from 'react-router-dom'
-
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
@@ -115,26 +112,6 @@ const Login = (props) => {
 
   return (
     <>
-      {/* <form className='form' id='login' onSubmit={(e) => handleLogin(e)}>
-        <TextField
-          onChange={(event) => handleChange(event, "username")}
-          id='username'
-          label='Username'
-          variant='outlined'
-          value={username}
-        />
-        <TextField
-          onChange={(event) => handleChange(event, "password")}
-          id='password'
-          label='Password'
-          variant='outlined'
-          value={password}
-        />
-
-        <Button type='Submit' variant='outlined' form='login' color='primary'>
-          Login
-        </Button>
-      </form> */}
       <Grid container component="main" className={classes.root2}>
         <CssBaseline />
         <Grid item xs={false} sm={4} md={7} className={classes.image} />
@@ -169,10 +146,6 @@ const Login = (props) => {
               label='Password'
               type="password"
             />
-            {/* <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            /> */}
             <Button
               type="submit"
               fullWidth
