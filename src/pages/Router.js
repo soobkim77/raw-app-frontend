@@ -23,11 +23,13 @@ export default function Router({ blogs, edit }) {
         <Route
           exact
           path='/blogs/:id/edit'
-          render={(routerProps) => <EditBlogForm {...routerProps} edit={edit} />}
+          render={(routerProps) => (
+            <EditBlogForm {...routerProps} edit={edit} />
+          )}
         ></Route>
-        <Route path='/profile' component={Profile} />
+        <Route exact path='/profile' component={Profile} />
         <Route path='/signup' component={SignUp} />
-        <Route path='/home' component={Home} />
+        <Route exact path='/home' component={Home} />
         <Route path='*'>
           <Error />
         </Route>

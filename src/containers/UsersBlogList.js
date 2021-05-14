@@ -1,9 +1,6 @@
 import React from "react";
-import BlogPreview from "../components/BlogViews/BlogPreview";
+import UserBlogPreview from "../components/BlogViews/UserBlogPreview";
 
-
-
-  
 //Material UI
   import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -20,16 +17,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const BlogList = ({ blogs }) => {
+const BlogList = ({ blogs, handleDelete }) => {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("sm"));
   const classes = useStyles();
 
   const columnMaker = (b) => {
     return (
-      <Grid item xs={matches ? 16:4}>
-          <BlogPreview key={b.id} blog={b} />
-        </Grid>
+      <Grid item xs={matches ? 16 : 4}>
+        <UserBlogPreview key={b.id} handleDelete={handleDelete} blog={b} />
+      </Grid>
     );
   };
 
@@ -55,8 +52,6 @@ const BlogList = ({ blogs }) => {
     row.push(rowMaker(column));
     return row.reverse().map((blog) => <>{blog}</>);
   };
-
-
 
   return (
     <div className={classes.root}>

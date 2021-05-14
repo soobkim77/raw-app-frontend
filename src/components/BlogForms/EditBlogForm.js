@@ -1,21 +1,18 @@
-import React, { Fragment, useState, useEffect } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 /*  Material UI  */
+import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+import Paper from "@material-ui/core/Paper";
+import Box from "@material-ui/core/Box";
 // Material UI styles
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    "& .MuiTextField-root": {
-      margin: theme.spacing(1),
-      width: "25ch",
-    },
-    button: {
-      margin: theme.spacing(1),
-    },
+  icon: {
+    color: "#f44336",
   },
 }));
 
@@ -31,7 +28,6 @@ const defState = {
 const URL = "http://localhost:3000/blogs/";
 
 const EditBlogForm = (props) => {
-  let history = useHistory();
   const classes = useStyles();
   const { id } = useParams();
   const [blog, setBlog] = useState(defState);
@@ -101,29 +97,39 @@ const handleSubmit = (e, {title, content, img}, id) => {
 
 
   return (
-    <Fragment>
+    <Box
+      display='flex'
+      justifyContent='center'
+      alignItems='center'
+      m={1}
+      p={1}
+      bgcolor='background.paper'
+    >
       <form
         onSubmit={(event) => handleSubmit(event, blog, id)}
-        className={classes.root}
         noValidate
         autoComplete='off'
       >
+        <Typography
+          alignContent='center'
+          className={classes.icon}
+          variant='h6'
+          noWrap
+        >
+          T I T L E
+        </Typography>
         <TextField
+          justifyContent='center'
           placeholder='Title'
           multiline
           name='title'
           value={blog.title}
           onChange={(event) => handleChange(event)}
           variant='outlined'
-        />
-        <TextField
-          placeholder='Content'
-          multiline
-          name='content'
-          value={blog.content}
-          onChange={(event) => handleChange(event)}
-          variant='outlined'
-        />
+        />{" "}
+        <Typography className={classes.icon} variant='h6' noWrap>
+          I M A G E
+        </Typography>
         <TextField
           placeholder='Image Url'
           multiline
@@ -132,6 +138,21 @@ const handleSubmit = (e, {title, content, img}, id) => {
           onChange={(event) => handleChange(event)}
           variant='outlined'
         />
+        <Typography className={classes.icon} variant='h6' noWrap>
+          C O N T E N T
+        </Typography>
+        <TextField
+          style={{ width: "80vw" }}
+          id='full-width-text-field'
+          placeholder='Content'
+          multiline
+          name='content'
+          value={blog.content}
+          onChange={(event) => handleChange(event)}
+          variant='outlined'
+        />{" "}
+        <br />
+        <br />
         <Button
           type='submit'
           variant='contained'
@@ -142,7 +163,7 @@ const handleSubmit = (e, {title, content, img}, id) => {
           Publish
         </Button>
       </form>
-    </Fragment>
+    </Box>
   );
 };
 

@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+import ChatBubbleOutlineIcon from "@material-ui/icons/ChatBubbleOutline";
 import Comment from "./Comment";
 
 const initialState = {
@@ -44,12 +44,11 @@ const COMMURL = "http://localhost:3000/comments/";
 
 export default function MainBlog() {
   const classes = useStyles();
+
   const [blog, setBlog] = useState(initialState);
   const [comments, setComments] = useState([]);
   const { id } = useParams();
   const [blogLikes, setBlogLikes] = useState();
-  const [likeBoolean, setLikeBoolean] = useState(false);
-  const [unlikeBoolean, setUnlikeBoolean] = useState(false);
   const [newComm, setNewComm] = useState();
 
   useEffect(() => {
@@ -97,7 +96,7 @@ export default function MainBlog() {
   const handleDelete = (commentID) => {
     setComments(comments.filter((x) => x.id !== commentID));
   };
-
+  
   const combinedDelete = (id) => {
     handleDelete(id);
     deleteComment(id);
@@ -120,14 +119,7 @@ export default function MainBlog() {
 
     fetch(LIKEURL, configObj)
       .then((r) => r.json())
-      .then((resp) => {
-        if (resp.message) {
-          setLikeBoolean(true);
-          setTimeout(() => setLikeBoolean(false), 3000);
-        } else {
-          setBlogLikes(blogLikes + 1);
-        }
-      });
+      .then(console.log);
   };
 
   const deleteLikeBlog = (blogID) => {
@@ -144,14 +136,7 @@ export default function MainBlog() {
     };
     fetch(LIKEURL + "/" + 1, configObj)
       .then((r) => r.json())
-      .then((resp) => {
-        if (resp.status === 500) {
-          setUnlikeBoolean(true);
-          setTimeout(() => setUnlikeBoolean(false), 3000);
-        } else {
-          setBlogLikes(blogLikes - 1);
-        }
-      });
+      .then(console.log);
   };
 
   const submitComment = (e, cont, blogID) => {
@@ -194,11 +179,9 @@ export default function MainBlog() {
         <Grid item xs={8}>
           <DisplayBlog
             blog={blog}
-            like={newLikeBlog}
+            likeCB={newLikeBlog}
             likes={blogLikes}
             unlike={deleteLikeBlog}
-            unlikeBool={unlikeBoolean}
-            likeBool={likeBoolean}
           />
         </Grid>
       </Grid>
@@ -212,6 +195,7 @@ export default function MainBlog() {
         className={classes.commentForm}
       >
         <form
+          container
           onSubmit={(e) => submitComment(e, newComm, blog.id)}
           className={classes.root}
           noValidate
@@ -229,9 +213,9 @@ export default function MainBlog() {
             variant='contained'
             color='default'
             className={classes.butt}
-            startIcon={<CloudUploadIcon />}
+            startIcon={<ChatBubbleOutlineIcon />}
           >
-            Publish
+            Comment
           </Button>
         </form>
       </Grid>

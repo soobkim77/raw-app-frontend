@@ -12,6 +12,8 @@ import {
   CardMedia,
 } from "@material-ui/core/";
 
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import YoutubeSearchedForOutlinedIcon from "@material-ui/icons/YoutubeSearchedForOutlined";
 
 const useStyles = makeStyles({
@@ -26,7 +28,8 @@ const useStyles = makeStyles({
   },
 });
 
-const BlogPreview = ({ blog }) => {
+
+const BlogPreview = ({ blog, handleDelete }) => {
   const classes = useStyles();
 
   const contentPreview = () => {
@@ -58,6 +61,16 @@ const BlogPreview = ({ blog }) => {
       <CardActions>
         <IconButton component={Link} to={`/blogs/${blog.id}`} aria-label='show'>
           <YoutubeSearchedForOutlinedIcon className={classes.icon} />
+        </IconButton>
+        <IconButton
+          component={Link}
+          to={`/blogs/${blog.id}/edit`}
+          aria-label='edit'
+        >
+          <EditIcon className={classes.icon} />
+        </IconButton>
+        <IconButton onClick={() => handleDelete(blog)} aria-label='delete'>
+          <DeleteForeverIcon />
         </IconButton>
       </CardActions>
     </Card>

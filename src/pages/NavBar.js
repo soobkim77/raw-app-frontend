@@ -4,16 +4,14 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-import InputBase from "@material-ui/core/InputBase";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
-import MenuIcon from "@material-ui/icons/Menu";
-import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import BookOutlinedIcon from "@material-ui/icons/BookOutlined";
 import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
 import MoreIcon from "@material-ui/icons/MoreVert";
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory } from "react-router-dom";
+import BorderColorOutlinedIcon from '@material-ui/icons/BorderColorOutlined';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -78,16 +76,25 @@ const useStyles = makeStyles((theme) => ({
       display: "none",
     },
   },
+  icon: {
+    color: "#f44336",
+  },
 }));
 
 export default function NavBar(props) {
-  const history = useHistory()
+  const history = useHistory();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const path = history.location.pathname;
+
+  
+  const pathParser = () => {
+    let pp = path.split('/');
+    return pp[1].toUpperCase();
+  };
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -123,8 +130,10 @@ export default function NavBar(props) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={() => history.push("/profile")}>My Profile</MenuItem>
+      <MenuItem onClick={() => history.push("/blogs/create")}>
+        New Blog
+      </MenuItem>
       <MenuItem onClick={() => handleLogOut()}>Logout</MenuItem>
     </Menu>
   );
@@ -170,33 +179,23 @@ export default function NavBar(props) {
 
   return (
     <div className={classes.grow}>
-      <AppBar position='static'>
+      <AppBar style={{ background: "#212121" }} position='static'>
         <Toolbar>
-          <IconButton
-            edge='start'
-            className={classes.menuButton}
-            color='inherit'
-            aria-label='open drawer'
-          >
-            <MenuIcon />
-          </IconButton>
           <Typography className={classes.title} variant='h6' noWrap>
             R A W
           </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder='Search…'
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ "aria-label": "search" }}
-            />
-          </div>
+          <IconButton onClick={() => history.push("/blogs/create")} aria-label='create' className={classes.icon} size='large'>
+            <BorderColorOutlinedIcon/>
+          </IconButton>
+          <Typography className={classes.title} variant='h6' noWrap>
+            {pathParser()}
+          </Typography>
           <div className={classes.grow} />
+          {pathParser() === "PROFILE" && (
+            <Typography align='left' variant='h6' className={classes.icon}>
+              {`Welcome ${props.user}`}
+            </Typography>
+          )}
           <div className={classes.sectionDesktop}>
             <IconButton
               component={Link}

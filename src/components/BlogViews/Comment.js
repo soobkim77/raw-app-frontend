@@ -8,41 +8,48 @@ const LIKEURL = "http://localhost:3000/likes"
 
 
 const useStyles = makeStyles({
-    root: {
-      minWidth: 500,
-      maxWidth: 500,
-      marginTop: ".5em",
-      marginBottom: ".5em",
-    },
-    bullet: {
-      display: 'inline-block',
-      margin: '0 2px',
-      transform: 'scale(0.8)',
-    },
-    title: {
-      fontSize: 14,
-    },
-    pos: {
-      marginBottom: 12,
-    },
-    avatar: {
-      backgroundColor: "#1769aa",
-    },
-    content: {
-      marginLeft: "2em"
-    },
-    trash: {
-      alignSelf: "right"
-    },
-    head: {
-      marginTop: ".75em"
-    },
-    bot: {
-      padding: "10px"
-    },
-    likes: {
-      paddingLeft: "1em"
-    }
+  root: {
+    minWidth: 500,
+    maxWidth: 500,
+    marginTop: ".5em",
+    marginBottom: ".5em",
+  },
+  bullet: {
+    display: "inline-block",
+    margin: "0 2px",
+    transform: "scale(0.8)",
+  },
+  title: {
+    fontSize: 14,
+  },
+  pos: {
+    marginBottom: 12,
+  },
+  avatar: {
+    backgroundColor: "primary",
+  },
+  content: {
+    marginLeft: "2em",
+  },
+  trash: {
+    color: "#f44336",
+    alignSelf: "right",
+  },
+  head: {
+    marginTop: ".75em",
+  },
+  bot: {
+    padding: "10px",
+  },
+  likes: {
+    paddingLeft: "1em",
+  },
+  icon: {
+    color: "#f44336",
+  },
+  icoff: {
+    color: "primary",
+  },
 });
 
 
@@ -51,8 +58,9 @@ const Comment = ({comment, deleteCom}) => {
     // const [commentBoolean, setCommentBoolean] = useState(false)
     const [likedComment, setLikedComment] = useState(false)
 
-    const classes = useStyles();
-
+  const classes = useStyles();
+  
+  
     const newLikeComment = (commentID) => {
       const body = {
           likeable_id: commentID,
@@ -82,40 +90,58 @@ const Comment = ({comment, deleteCom}) => {
   }
 
     return (
-        <Card className={classes.root} variant='outlined'>
-          <CardHeader
+      <Card className={classes.root} variant='outlined'>
+        <CardHeader
           className={classes.head}
-            avatar={
-              <Avatar aria-label='recipe' className={classes.avatar}>
-                {comment.attributes.user[0] || "R"}
-              </Avatar>
-            }
-            title={comment.attributes.user}
-            subheader={comment.attributes.created_at.split("T")[0]}
-          />
-            <CardContent className={classes.bot}>
-                <Typography className={classes.content} color="textPrimary" gutterBottom>
-                    {comment.attributes.content}
+          avatar={
+            <Avatar aria-label='recipe' className={classes.avatar}>
+              {comment.attributes.user[0] || "R"}
+            </Avatar>
+          }
+          title={comment.attributes.user}
+          subheader={comment.attributes.created_at.split("T")[0]}
+        />
+        <CardContent className={classes.bot}>
+          <Typography
+            className={classes.content}
+            color='textPrimary'
+            gutterBottom
+          >
+            {comment.attributes.content}
+          </Typography>
+          <CardActions>
+            <Grid container>
+              <Grid item xs={12} sm={10} className={classes.likes}>
+                <Typography
+                  className={classes.title}
+                  color='textSecondary'
+                  gutterBottom
+                >
+                  {commentLikes}{" "}
+                  {likedComment ? (
+                    <IconButton onClick={() => newLikeComment(comment.id)}>
+                      <ThumbUpIcon className={classes.icon} />
+                    </IconButton>
+                  ) : (
+                    <IconButton onClick={() => newLikeComment(comment.id)}>
+                      <ThumbUpIcon className={classes.icoff} />
+                    </IconButton>
+                  )}
                 </Typography>
-                <CardActions>
-                  <Grid container>
-                    <Grid item xs={12} sm={10} className={classes.likes}>
-                      <Typography className={classes.title} color="textSecondary" gutterBottom>
-                          {commentLikes} <IconButton onClick={() => newLikeComment(comment.id)}><ThumbUpIcon/></IconButton> 
-                          {likedComment ? <p>You've already liked this comment </p> : null}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={12} sm={2}>
-                      <IconButton className={classes.trash} onClick={() => deleteCom(comment.id)}>
-                        <DeleteOutlinedIcon/>
-                      </IconButton>
-                    </Grid>
-                  </Grid>
-                </CardActions>
-            </CardContent>
-            
-        </Card>
-    )
+              </Grid>
+              <Grid item xs={12} sm={2}>
+                <IconButton
+                  className={classes.trash}
+                  onClick={() => deleteCom(comment.id)}
+                >
+                  <DeleteOutlinedIcon />
+                </IconButton>
+              </Grid>
+            </Grid>
+          </CardActions>
+        </CardContent>
+      </Card>
+    );
 }
 
 

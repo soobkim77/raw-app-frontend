@@ -3,6 +3,10 @@ import Blogs from "./pages/Blogs";
 import Login from "./pages/Login";
 import { Switch, Route } from "react-router-dom";
 import SignUp from "./pages/SignUp";
+import Router from "./pages/Router"
+
+
+
 export default function App() {
   const [loggedIn, isLoggedIn] = useState(true);
 
@@ -22,6 +26,7 @@ export default function App() {
           <Blogs loginHelper={loginHelper} />
         </Route>
         <Route exact path='/signup' component={SignUp} />
+        <Router />
       </Switch>
     </>
   );

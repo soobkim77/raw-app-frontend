@@ -1,20 +1,15 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import clsx from "clsx";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
-import Collapse from "@material-ui/core/Collapse";
 import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import FavoriteIcon from "@material-ui/icons/Favorite";
-import ShareIcon from "@material-ui/icons/Share";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import ThumbDownIcon from '@material-ui/icons/ThumbDown';
-
+import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,24 +30,34 @@ const useStyles = makeStyles((theme) => ({
     transform: "rotate(180deg)",
   },
   avatar: {
-    backgroundColor: "#1769aa",
+    backgroundColor: "#f44336",
+  },
+  icon: {
+    color: "#f44336",
+  },
+  icoff: {
+    color: "primary",
   },
 }));
 
-export default function DisplayBlog({
-  blog: { img, content, title, user, id, created_at},
-  like,
-  likes,
-  likeBool,
-  unlike,
-  unlikeBool
-}) {
-
+export default function DisplayBlog({ blog: { content, title, user, id, created_at }, likes }) {
+  
+  const [heart, isHeart] = useState();
+  const [thumb, isThumb] = useState();
+  const [like, setLike] = useState(1);
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState(true);
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
+
+
+  const likeHelper = () => {
+    isHeart(true);
+    isThumb(false);
+    setLike(like + 1);
+  }
+  const thumbHelper = () => {
+    isHeart(false);
+    isThumb(true);
+    setLike(like -1)
+  }
 
   return (
     <Card className={classes.root}>
@@ -75,38 +80,29 @@ export default function DisplayBlog({
           {created_at.split("T")[0]}
         </Typography>
         <Typography variant='body2' color='textSecondary' component='p'>
-          {likes} likes
-          {likeBool? <p>You've already liked this post!</p> : null}
-          {unlikeBool? <p>You haven't like this post yet!</p> : null}
+          {like} likes
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label='like blog' onClick={() => like()}>
-          <FavoriteIcon />
+        <IconButton aria-label='like blog' onClick={() => likeHelper()}>
+          {heart ? (
+            <FavoriteIcon className={classes.icon} />
+          ) : (
+            <FavoriteIcon className={classes.icoff} />
+          )}
         </IconButton>
-        <IconButton aria-label='like blog' onClick={() => unlike(id)}>
-          <ThumbDownIcon />
-        </IconButton>
-        <IconButton aria-label='share'>
-          <ShareIcon />
-        </IconButton>
-        <IconButton
-          className={clsx(classes.expand, {
-            [classes.expandOpen]: expanded,
-          })}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label='show more'
-        >
-          <ExpandMoreIcon />
+        <IconButton aria-label='like blog' onClick={() => thumbHelper()}>
+          {thumb ? (
+            <ThumbDownIcon className={classes.icon} />
+          ) : (
+            <ThumbDownIcon className={classes.icoff} />
+          )}
         </IconButton>
       </CardActions>
-      <Collapse in={expanded} timeout='auto' unmountOnExit>
-        <CardContent>
-          <Typography variant='h3'>{title}</Typography>
-          <Typography paragraph>{content}</Typography>
-        </CardContent>
-      </Collapse>
+      <CardContent>
+        <Typography variant='h3'>{title}</Typography>
+        <Typography paragraph>{content}</Typography>
+      </CardContent>
     </Card>
   );
 }
