@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+
 import {
   Typography,
   IconButton,
@@ -25,7 +26,10 @@ const useStyles = makeStyles({
   },
 });
 
+
+
 const BlogPreview = ({ blog }) => {
+
   const classes = useStyles();
 
   const contentPreview = () => {

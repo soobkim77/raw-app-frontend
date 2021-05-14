@@ -14,7 +14,6 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 600,
@@ -37,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#1769aa",
   },
 }));
-//
+
 export default function DisplayBlog({
   blog: { img, content, title, user, id, created_at },
 }) {

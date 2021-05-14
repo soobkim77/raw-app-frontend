@@ -6,10 +6,7 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
-import Link from "@material-ui/core/Link";
 import Comment from './Comment'
-
-const URL = "http://localhost:3000/blogs/";
 
 const initialState = {
   content:
@@ -73,13 +70,9 @@ export default function MainBlog() {
         title: data.data.attributes.title,
         user: data.data.attributes.user,
       };
-      
       const newComments = data.data.attributes.comments.data;
-      
       setBlog(newBlog);
-      
       setComments(newComments);
-      
       setBlogLikes(data.data.attributes.likecount)
   };
 
@@ -187,6 +180,7 @@ export default function MainBlog() {
 
 
   return (
+    <>
     <Grid
       container
       spacing={0}
@@ -233,6 +227,7 @@ export default function MainBlog() {
               )
         })}
       </Grid>
-    </Grid>
+      </Grid>
+      </>
   );
 }
